@@ -1,7 +1,6 @@
 import asyncio
 import time
 
-from strings.filters import command
 from pyrogram import filters
 from pyrogram.enums import ChatMembersFilter
 from pyrogram.types import CallbackQuery, Message
@@ -17,7 +16,7 @@ from config import BANNED_USERS, adminlist, lyrical
 rel = {}
 
 
-@app.on_message(
+@app.on_message(    
     command(["/admincache","/reload", "ريلود", "رفرش"]) & filters.group & ~BANNED_USERS
 )
 @language
@@ -47,7 +46,7 @@ async def reload_admin_cache(client, message: Message, _):
         await message.reply_text(_["reload_3"])
 
 
-@app.on_message(command(["/reboot","ريبوت"]) & filters.group & ~BANNED_USERS)
+@app.on_message(filters.command(["reboot"]) & filters.group & ~BANNED_USERS)
 @AdminActual
 async def restartbot(client, message: Message, _):
     mystic = await message.reply_text(_["reload_4"].format(app.mention))
@@ -88,13 +87,15 @@ async def restartbot(client, message: Message, _):
 
 
 @app.on_callback_query(filters.regex("close") & ~BANNED_USERS)
-async def close_menu(_, CallbackQuery):
+async def close_menu(_, query: CallbackQuery):
     try:
-        await CallbackQuery.answer()
-        await CallbackQuery.message.delete()
-        await CallbackQuery.message.reply_text(
+        await query.answer()
+        await query.message.delete()
+        umm = await query.message.reply_text(
             f"• تم الاغـلاق بواسطـة : {CallbackQuery.from_user.mention}"
         )
+        await asyncio.sleep(7)
+        await umm.delete()
     except:
         pass
 
