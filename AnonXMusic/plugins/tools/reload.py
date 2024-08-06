@@ -16,8 +16,8 @@ from config import BANNED_USERS, adminlist, lyrical
 rel = {}
 
 
-@app.on_message(    
-    command(["/admincache","/reload", "ريلود", "رفرش"]) & filters.group & ~BANNED_USERS
+@app.on_message(
+    filters.command(["admincache", "reload", "refresh"]) & filters.group & ~BANNED_USERS
 )
 @language
 async def reload_admin_cache(client, message: Message, _):
