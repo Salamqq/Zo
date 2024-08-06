@@ -33,29 +33,7 @@ from config import (
     confirmer,
     votemode,
 )
-from pyrogram import Client
-from pyrogram import Client
-from pyrogram.raw import functions, types
-
-# تعريف العميل
-app = Client("message.from_user.mention")
-
-# عند استلام تحديث خام
-@app.on_raw_update()
-async def on_raw_update(client, update):
-    # التحقق مما إذا كان التحديث يشير إلى بداية أو نهاية المحادثة الصوتية
-    if isinstance(update, types.UpdateGroupCall):
-        if isinstance(update.call, types.GroupCallDiscarded):
-            # بداية المحادثة الصوتية
-            print("↢ تم بدء المحادثة الصوتية..⚘")
-        else:
-            # نهاية المحادثة الصوتية
-            print("- تم إنهاء مكالمة")
-
-# ابدأ العميل
-app.start()
-
-
+from strings import get_string
 
 checker = {}
 upvoters = {}
