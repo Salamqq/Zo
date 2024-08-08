@@ -6,10 +6,10 @@ from typing import Union
 import yt_dlp
 from pyrogram.enums import MessageEntityType
 from pyrogram.types import Message
-from youtubesearchpython.__future__ import VideosSearch
+from youtubesearchpython.future import VideosSearch
 
-from AnonXMusic.utils.database import is_on_off
-from AnonXMusic.utils.formatters import time_to_seconds
+from SrcMusicKERO.utils.database import is_on_off
+from SrcMusicKERO.utils.formatters import time_to_seconds
 
 
 async def shell_cmd(cmd):
@@ -28,7 +28,7 @@ async def shell_cmd(cmd):
 
 
 class YouTubeAPI:
-    def __init__(self):
+    def init(self):
         self.base = "https://www.youtube.com/watch?v="
         self.regex = r"(?:youtube\.com|youtu\.be)"
         self.status = "https://www.youtube.com/oembed?url="
@@ -113,8 +113,7 @@ class YouTubeAPI:
         for result in (await results.next())["result"]:
             thumbnail = result["thumbnails"][0]["url"].split("?")[0]
         return thumbnail
-
-    async def video(self, link: str, videoid: Union[bool, str] = None):
+async def video(self, link: str, videoid: Union[bool, str] = None):
         if videoid:
             link = self.base + link
         if "&" in link:
@@ -140,7 +139,7 @@ class YouTubeAPI:
         if "&" in link:
             link = link.split("&")[0]
         playlist = await shell_cmd(
-            f"yt-dlp -i --get-id --flat-playlist --playlist-end {limit} --skip-download {link}"
+            f"yt-dlp -i get-id flat-playlist playlist-end {limit} skip-download {link}"
         )
         try:
             result = playlist.split("\n")
@@ -225,8 +224,7 @@ class YouTubeAPI:
         vidid = result[query_type]["id"]
         thumbnail = result[query_type]["thumbnails"][0]["url"].split("?")[0]
         return title, duration_min, thumbnail, vidid
-
-    async def download(
+async def download(
         self,
         link: str,
         mystic,
@@ -335,7 +333,7 @@ class YouTubeAPI:
                     stderr=asyncio.subprocess.PIPE,
                 )
                 stdout, stderr = await proc.communicate()
-                if stdout:
+if stdout:
                     downloaded_file = stdout.decode().split("\n")[0]
                     direct = None
                 else:
