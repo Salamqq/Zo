@@ -3,7 +3,7 @@ from pyrogram.types import Message
 
 from AnonXMusic import app
 from strings.filters import command
-from AnonXMusic.core.call import Anony
+from AnonXMusic.core.call import  Hotty
 from AnonXMusic.utils.database import is_music_playing, music_off
 from AnonXMusic.utils.decorators import AdminRightsCheck
 from AnonXMusic.utils.inline import close_markup
