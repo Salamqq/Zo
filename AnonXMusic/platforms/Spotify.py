@@ -1,14 +1,12 @@
 import re
-
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-from youtubesearchpython.__future__ import VideosSearch
+from pytube import YouTube
 
 import config
 
-
 class SpotifyAPI:
-    def __init__(self):
+    def init(self):
         self.regex = r"^(https:\/\/open.spotify.com\/)(.*)$"
         self.client_id = config.SPOTIFY_CLIENT_ID
         self.client_secret = config.SPOTIFY_CLIENT_SECRET
@@ -35,21 +33,16 @@ class SpotifyAPI:
             fetched = f' {artist["name"]}'
             if "Various Artists" not in fetched:
                 info += fetched
-        results = VideosSearch(info, limit=1)
-        for result in (await results.next())["result"]:
-            ytlink = result["link"]
-            title = result["title"]
-            vidid = result["id"]
-            duration_min = result["duration"]
-            thumbnail = result["thumbnails"][0]["url"].split("?")[0]
-        track_details = {
-            "title": title,
-            "link": ytlink,
-            "vidid": vidid,
-            "duration_min": duration_min,
-            "thumb": thumbnail,
+
+        yt_search = YouTube(f"https://www.youtube.com/results?search_query={info}")
+        yt_video = yt_search.streams.filter(only_audio=True).first()
+        yt_info = {
+            "title": yt_video.title,
+            "link": yt_video.watch_url,
+            "duration_min": yt_video.length // 60,
+            "thumb": yt_video.thumbnail_url,
         }
-        return track_details, vidid
+        return yt_info
 
     async def playlist(self, url):
         playlist = self.spotify.playlist(url)
@@ -77,10 +70,7 @@ class SpotifyAPI:
                     info += fetched
             results.append(info)
 
-        return (
-            results,
-            album_id,
-        )
+        return results, album_id
 
     async def artist(self, url):
         artistinfo = self.spotify.artist(url)
