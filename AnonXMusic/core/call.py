@@ -35,7 +35,7 @@ from AnonXMusic.utils.database import (
 )
 from AnonXMusic.utils.exceptions import AssistantErr
 from AnonXMusic.utils.formatters import check_duration, seconds_to_min, speed_converter
-from AnonXMusic.utils.inline.play import stream_markup, stream_markup2
+from AnonXMusic.utils.thumbnails import get_thumb
 from AnonXMusic.utils.stream.autoclear import auto_clean
 from AnonXMusic.utils.thumbnails import get_thumb
 from strings import get_string
